@@ -3,56 +3,79 @@
 {%block head%}
 	<script type="text/javascript">
 		$(function () {
-			$('#add_cart').click(function(){
-			    var $add_x = $('#add_cart').offset().top;
-				var $add_y = $('#add_cart').offset().left;
+            $('#add_cart').click(function () {
+                $.get('/user/islogin/', function (data) {
+                    if (data.islogin) {
+                        gid = $('#gid').val();
+                        count = $('.num_show').val();
+                        $.get('/cart/add/', {'gid': gid, 'count': count}, function (data) {
+                            if (data.isadd) {
+                                var $add_x = $('#add_cart').offset().top;
+                                var $add_y = $('#add_cart').offset().left;
 
-				var $to_x = $('#show_count').offset().top;
-				var $to_y = $('#show_count').offset().left;
+                                var $to_x = $('#show_count').offset().top;
+                                var $to_y = $('#show_count').offset().left;
 
-				$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+                                $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'})
 
-				$(".add_jump").stop().animate({
-					'left': $to_y+7,
-					'top': $to_x+7},
-					"fast", function() {
-						$(".add_jump").fadeOut('fast',function(){
-							$('#show_count').html(2);
-						});
+                                $(".add_jump").stop().animate({
+                                        'left': $to_y + 7,
+                                        'top': $to_x + 7
+                                    },
+                                    "fast", function () {
+                                        $(".add_jump").fadeOut('fast', function () {
+                                            $, get('/cart/count/', function (data) {
+                                                $('#show_count').html(data.cart_count);
+                                            })
+                                        });
+                                    })
 
-				});
-			})
 
-			$('.num_show').blur(function () {
-				//验证输入的数量是否合法
-				num=parseInt($(this).val());
-				kucun=parseInt($('#kucun').val());
-				if(num<1){
-				    num=1;
-				}
-				if(num>kucun){
-				    num=kucun;
-				}
-				if(isNaN(num)){
-				    num=1;
-				}
-				$(this).val(num);
-				//计算总价
-				price=parseFloat($('.show_pirze em').text());
-				total=price*num;
-				$('.total em').text(total.toFixed(2)+'元')
+                            }
+
+                            else {
+                                alert('购买失败，请稍后重试');
+                            }
+                        })
+                    }
+                    else {
+                        location.href = '/user/login/';
+                    }
+                })
             })
-			$('.add').click(function () {
-				num=parseInt($('.num_show').val());
-				num++;
-				$('.num_show').val(num).blur
+
+
+            $('.num_show').blur(function () {
+                //验证输入的数量是否合法
+                num = parseInt($(this).val());
+                kucun = parseInt($('#kucun').val());
+                if (num < 1) {
+                    num = 1;
+                }
+                if (num > kucun) {
+                    num = kucun;
+                }
+                if (isNaN(num)) {
+                    num = 1;
+                }
+                $(this).val(num);
+                //计算总价
+                price = parseFloat($('.show_pirze em').text());
+                total = price * num;
+                $('.total em').text(total.toFixed(2) + '元')
             })
-			$('.minus').click(function () {
-				num=parseInt($('.num_show').val());
-				num--;
-				$('.num_show').val(num).blur();
+            $('.add').click(function () {
+                num = parseInt($('.num_show').val());
+                num++;
+                $('.num_show').val(num).blur
             })
-		})
+            $('.minus').click(function () {
+                num = parseInt($('.num_show').val());
+                num--;
+                $('.num_show').val(num).blur();
+            })
+        })
+
 	</script>
 
 {%endblock head%}
@@ -81,7 +104,9 @@
 			<div class="goods_num clearfix">
 				<div class="num_name fl">数 量：</div>
 				<div class="num_add fl">
-					<input type="text" class="num_show fl" value="{{goods.gkucun}}">
+					<input type="hidden" id="gid" value="{{goods.id}}">
+					<input type="text" class="num_show fl" value="1">
+					<input type="hidden" id="kucun" value="{{goods.gkucun}}">
 					<a href="javascript:;" class="add fr">+</a>
 					<a href="javascript:;" class="minus fr">-</a>	
 				</div> 

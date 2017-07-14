@@ -22,6 +22,7 @@ urlpatterns = [
     # url(r'^search/', include('haystack.urls')),
     url('^',include('df_goods.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
+    url('^cart/', include('df_cart.urls')),
 ]
 
 

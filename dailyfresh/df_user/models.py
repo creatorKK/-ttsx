@@ -9,4 +9,5 @@ class UserInfo(models.Model):
     uaddress = models.CharField(default='', max_length=100)
     ucode = models.CharField(default='', max_length=6)
     uphone = models.CharField(default='', max_length=11)
+    uu=models.CharField(default='', max_length=10)
    

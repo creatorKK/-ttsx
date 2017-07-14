@@ -45,8 +45,9 @@ def goods_list(request,tid,pindex,orderby):
         page=paginator.page(pindex1)
         context = {'title':'商品列表页', 'cart':'1', 't1':t1, 'new_list':new_list, 'page':page}
         return render(request, 'df_goods/list.html', context)
-    except:
-        return render(request, '404.html')
+    except Exception as result:
+        context={'result':result}
+        return render(request, '404.html',context)
 
 def detail(request,id):
     try:

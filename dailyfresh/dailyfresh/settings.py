@@ -41,7 +41,8 @@ INSTALLED_APPS = (
     'df_user',
     'haystack',
     'df_goods',
-    'tinymce'
+    'tinymce',
+    'df_cart',
 )
 
 MIDDLEWARE_CLASSES = (
